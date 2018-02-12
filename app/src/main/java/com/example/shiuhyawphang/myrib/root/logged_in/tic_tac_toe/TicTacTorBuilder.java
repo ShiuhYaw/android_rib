@@ -1,13 +1,11 @@
-package com.example.shiuhyawphang.myrib.root;
+package com.example.shiuhyawphang.myrib.root.logged_in.tic_tac_toe;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.uber.rib.core.InteractorBaseComponent;
 import com.uber.rib.core.ViewBuilder;
-import com.example.shiuhyawphang.myrib.R;
-import com.example.shiuhyawphang.myrib.root.logged_out.LoggedOutBuilder;
-
 import java.lang.annotation.Retention;
 
 import javax.inject.Scope;
@@ -20,39 +18,39 @@ import dagger.BindsInstance;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
- * Builder for the {@link RootScope}.
+ * Builder for the {@link TicTacTorScope}.
  *
  * TODO describe this scope's responsibility as a whole.
  */
-public class RootBuilder
-    extends ViewBuilder<RootView, RootRouter, RootBuilder.ParentComponent> {
+public class TicTacTorBuilder
+    extends ViewBuilder<TicTacTorView, TicTacTorRouter, TicTacTorBuilder.ParentComponent> {
 
-  public RootBuilder(ParentComponent dependency) {
+  public TicTacTorBuilder(ParentComponent dependency) {
     super(dependency);
   }
 
   /**
-   * Builds a new {@link RootRouter}.
+   * Builds a new {@link TicTacTorRouter}.
    *
    * @param parentViewGroup parent view group that this router's view will be added to.
-   * @return a new {@link RootRouter}.
+   * @return a new {@link TicTacTorRouter}.
    */
-  public RootRouter build(ViewGroup parentViewGroup) {
-    RootView view = createView(parentViewGroup);
-    RootInteractor interactor = new RootInteractor();
-    Component component = DaggerRootBuilder_Component.builder()
+  public TicTacTorRouter build(ViewGroup parentViewGroup) {
+    TicTacTorView view = createView(parentViewGroup);
+    TicTacTorInteractor interactor = new TicTacTorInteractor();
+    Component component = DaggerTicTacTorBuilder_Component.builder()
         .parentComponent(getDependency())
         .view(view)
         .interactor(interactor)
         .build();
-    return component.rootRouter();
+    return component.tictactorRouter();
   }
 
   @Override
-  protected RootView inflateView(LayoutInflater inflater, ViewGroup parentViewGroup) {
+  protected TicTacTorView inflateView(LayoutInflater inflater, ViewGroup parentViewGroup) {
     // TODO: Inflate a new view using the provided inflater, or create a new view programatically using the
     // provided context from the parentViewGroup.
-    return (RootView)inflater.inflate(R.layout.activity_main, parentViewGroup,false);
+    return null;
   }
 
   public interface ParentComponent {
@@ -62,47 +60,47 @@ public class RootBuilder
   @dagger.Module
   public abstract static class Module {
 
-    @RootScope
+    @TicTacTorScope
     @Binds
-    abstract RootInteractor.RootPresenter presenter(RootView view);
+    abstract TicTacTorInteractor.TicTacTorPresenter presenter(TicTacTorView view);
 
-    @RootScope
+    @TicTacTorScope
     @Provides
-    static RootRouter router(
+    static TicTacTorRouter router(
       Component component,
-      RootView view,
-      RootInteractor interactor) {
-      return new RootRouter(view, interactor, component, new LoggedOutBuilder(component));
+      TicTacTorView view,
+      TicTacTorInteractor interactor) {
+      return new TicTacTorRouter(view, interactor, component);
     }
 
     // TODO: Create provider methods for dependencies created by this Rib. These should be static.
   }
 
-  @RootScope
+  @TicTacTorScope
   @dagger.Component(modules = Module.class,
        dependencies = ParentComponent.class)
-  interface Component extends InteractorBaseComponent<RootInteractor>, LoggedOutBuilder.ParentComponent,  BuilderComponent {
+  interface Component extends InteractorBaseComponent<TicTacTorInteractor>, BuilderComponent {
 
     @dagger.Component.Builder
     interface Builder {
       @BindsInstance
-      Builder interactor(RootInteractor interactor);
+      Builder interactor(TicTacTorInteractor interactor);
       @BindsInstance
-      Builder view(RootView view);
+      Builder view(TicTacTorView view);
       Builder parentComponent(ParentComponent component);
       Component build();
     }
   }
 
   interface BuilderComponent  {
-    RootRouter rootRouter();
+    TicTacTorRouter tictactorRouter();
   }
 
   @Scope
   @Retention(CLASS)
-  @interface RootScope { }
+  @interface TicTacTorScope { }
 
   @Qualifier
   @Retention(CLASS)
-  @interface RootInternal { }
+  @interface TicTacTorInternal { }
 }

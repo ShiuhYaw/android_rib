@@ -17,12 +17,7 @@ public class MainActivity extends RibActivity {
 
     @Override
     protected ViewRouter<?, ?, ?> createRouter(ViewGroup parentViewGroup) {
-        RootBuilder rootBuilder = new RootBuilder(new RootBuilder.ParentComponent() {
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
-        });
+        RootBuilder rootBuilder = new RootBuilder(new RootBuilder.ParentComponent() {});
         return rootBuilder.build(parentViewGroup);
     }
 }

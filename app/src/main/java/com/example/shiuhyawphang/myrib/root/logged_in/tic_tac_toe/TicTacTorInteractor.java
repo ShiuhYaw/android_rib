@@ -1,4 +1,4 @@
-package com.example.shiuhyawphang.myrib.root;
+package com.example.shiuhyawphang.myrib.root.logged_in.tic_tac_toe;
 
 import android.support.annotation.Nullable;
 
@@ -11,20 +11,20 @@ import com.uber.rib.core.Router;
 import javax.inject.Inject;
 
 /**
- * Coordinates Business Logic for {@link RootScope}.
+ * Coordinates Business Logic for {@link TicTacTorScope}.
  *
  * TODO describe the logic of this scope.
  */
 @RibInteractor
-public class RootInteractor
-    extends Interactor<RootInteractor.RootPresenter, RootRouter> {
+public class TicTacTorInteractor
+    extends Interactor<TicTacTorInteractor.TicTacTorPresenter, TicTacTorRouter> {
 
-  @Inject RootPresenter presenter;
+  @Inject TicTacTorPresenter presenter;
 
   @Override
   protected void didBecomeActive(@Nullable Bundle savedInstanceState) {
     super.didBecomeActive(savedInstanceState);
-    getRouter().attachLoggedOut();
+
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
   }
 
@@ -39,5 +39,5 @@ public class RootInteractor
   /**
    * Presenter interface implemented by this RIB's view.
    */
-  interface RootPresenter { }
+  interface TicTacTorPresenter { }
 }
