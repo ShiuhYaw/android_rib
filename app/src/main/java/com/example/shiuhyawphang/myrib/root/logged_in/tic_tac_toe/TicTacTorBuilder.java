@@ -1,13 +1,15 @@
 package com.example.shiuhyawphang.myrib.root.logged_in.tic_tac_toe;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.uber.rib.core.InteractorBaseComponent;
 import com.uber.rib.core.ViewBuilder;
+import com.example.shiuhyawphang.myrib.R;
+
 import java.lang.annotation.Retention;
 
+import javax.inject.Named;
 import javax.inject.Scope;
 import javax.inject.Qualifier;
 
@@ -50,11 +52,14 @@ public class TicTacTorBuilder
   protected TicTacTorView inflateView(LayoutInflater inflater, ViewGroup parentViewGroup) {
     // TODO: Inflate a new view using the provided inflater, or create a new view programatically using the
     // provided context from the parentViewGroup.
-    return null;
+    return (TicTacTorView) inflater.inflate(R.layout.tic_tac_toe_rib, parentViewGroup, false);
   }
 
   public interface ParentComponent {
-    // TODO: Define dependencies required from your parent interactor here.
+
+    TicTacTorInteractor.Listener ticTacTorListener();
+    @Named("player_one") String playerOne();
+    @Named("player_two") String playerTwo();
   }
 
   @dagger.Module

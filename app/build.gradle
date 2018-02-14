@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion deps.build.compileSdkVersion
+    buildToolsVersion deps.build.buildToolsVersion
     defaultConfig {
         applicationId "com.example.shiuhyawphang.myrib"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion deps.build.minSdkVersion
+        targetSdkVersion deps.build.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -16,22 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    annotationProcessor deps.apt.daggerCompiler
     annotationProcessor 'com.uber.rib:rib-compiler-test:0.9.1'
     compile 'com.uber.rib:rib-android:0.9.1'
-    testCompile 'com.uber.rib:rib-test-utils:0.9.1'
-
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
-    implementation 'com.google.dagger:dagger:2.13'
-
+    compile deps.external.dagger
     compile deps.external.rxbinding
+    compile 'com.android.support:percent:25.1.1'
+    compile 'com.google.guava:guava:11.0.2'
+    provided deps.apt.androidApi
+    provided deps.apt.javax
+    testCompile 'com.uber.rib:rib-test-utils:0.9.1'
 }

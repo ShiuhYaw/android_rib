@@ -55,7 +55,8 @@ public class LoggedOutBuilder
   }
 
   public interface ParentComponent {
-    // TODO: Define dependencies required from your parent interactor here.
+
+    LoggedOutInteractor.Listener listener();
   }
 
   @dagger.Module

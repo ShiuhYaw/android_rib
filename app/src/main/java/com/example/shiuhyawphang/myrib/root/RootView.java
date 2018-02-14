@@ -3,13 +3,12 @@ package com.example.shiuhyawphang.myrib.root;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 
 /**
  * Top level view for {@link RootBuilder.RootScope}.
  */
-class RootView extends FrameLayout implements RootInteractor.RootPresenter {
+public class RootView extends FrameLayout implements RootInteractor.RootPresenter {
 
   public RootView(Context context) {
     this(context, null);

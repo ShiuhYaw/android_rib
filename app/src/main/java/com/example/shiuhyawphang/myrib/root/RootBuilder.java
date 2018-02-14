@@ -3,6 +3,8 @@ package com.example.shiuhyawphang.myrib.root;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.example.shiuhyawphang.myrib.root.logged_in.LoggedInBuilder;
+import com.example.shiuhyawphang.myrib.root.logged_out.LoggedOutInteractor;
 import com.uber.rib.core.InteractorBaseComponent;
 import com.uber.rib.core.ViewBuilder;
 import com.example.shiuhyawphang.myrib.R;
@@ -11,7 +13,6 @@ import com.example.shiuhyawphang.myrib.root.logged_out.LoggedOutBuilder;
 import java.lang.annotation.Retention;
 
 import javax.inject.Scope;
-import javax.inject.Qualifier;
 
 import dagger.Provides;
 import dagger.Binds;
@@ -63,6 +64,12 @@ public class RootBuilder
   public abstract static class Module {
 
     @RootScope
+    @Provides
+    static LoggedOutInteractor.Listener loggedOutListener(RootInteractor rootInteractor) {
+      return rootInteractor.new LoggedOutListener();
+    }
+
+    @RootScope
     @Binds
     abstract RootInteractor.RootPresenter presenter(RootView view);
 
@@ -72,16 +79,23 @@ public class RootBuilder
       Component component,
       RootView view,
       RootInteractor interactor) {
-      return new RootRouter(view, interactor, component, new LoggedOutBuilder(component));
+      return new RootRouter(
+              view,
+              interactor,
+              component,
+              new LoggedOutBuilder(component),
+              new LoggedInBuilder(component));
     }
 
     // TODO: Create provider methods for dependencies created by this Rib. These should be static.
   }
 
   @RootScope
-  @dagger.Component(modules = Module.class,
-       dependencies = ParentComponent.class)
-  interface Component extends InteractorBaseComponent<RootInteractor>, LoggedOutBuilder.ParentComponent,  BuilderComponent {
+  @dagger.Component(
+          modules = Module.class,
+       dependencies = ParentComponent.class
+  )
+  interface Component extends InteractorBaseComponent<RootInteractor>, LoggedOutBuilder.ParentComponent, LoggedInBuilder.ParentComponent,  BuilderComponent {
 
     @dagger.Component.Builder
     interface Builder {
@@ -101,8 +115,4 @@ public class RootBuilder
   @Scope
   @Retention(CLASS)
   @interface RootScope { }
-
-  @Qualifier
-  @Retention(CLASS)
-  @interface RootInternal { }
 }

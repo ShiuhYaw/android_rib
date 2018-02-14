@@ -2,6 +2,7 @@ package com.example.shiuhyawphang.myrib.root.logged_out;
 
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.support.v4.util.Pair;
 
 import com.uber.rib.core.Bundle;
 import com.uber.rib.core.Interactor;
@@ -21,35 +22,43 @@ import io.reactivex.functions.Consumer;
 public class LoggedOutInteractor
     extends Interactor<LoggedOutInteractor.LoggedOutPresenter, LoggedOutRouter> {
 
-  @Inject LoggedOutPresenter presenter;
+    @Inject Listener listener;
+    @Inject LoggedOutPresenter presenter;
 
   @Override
   protected void didBecomeActive(@Nullable Bundle savedInstanceState) {
     super.didBecomeActive(savedInstanceState);
     presenter
-            .loginName()
-            .subscribe(new Consumer<String>() {
-                         @Override
-                         public void accept(String name) throws Exception {
-                           Log.d("Name", name);
-                         }
-                       }
-
-            );
+            .playerNames()
+            .subscribe(new Consumer<Pair<String, String>>() {
+                @Override
+                public void accept(Pair<String, String> names) throws Exception {
+                    if (!isEmpty(names.first) && !isEmpty(names.second)) {
+                        listener.requestLogin(names.first, names.second);
+                    }
+                }
+            });
     // TODO: Add attachment logic here (RxSubscriptions, etc.).
+  }
+
+  private boolean isEmpty(@Nullable String string) {
+      return string == null || string.length() == 0;
   }
 
   @Override
   protected void willResignActive() {
     super.willResignActive();
-
-    // TODO: Perform any required clean up here, or delete this method entirely if not needed.
   }
 
   /**
    * Presenter interface implemented by this RIB's view.
    */
   interface LoggedOutPresenter {
-    Observable<String> loginName();
+    Observable<Pair<String, String>> playerNames();
+  }
+
+  public interface Listener {
+
+      void requestLogin(String playerOne, String playerTwo);
   }
 }
